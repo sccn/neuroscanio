@@ -8,9 +8,9 @@
 %
 % Optional inputs:
 %  't1'         - start at time t1, default 0. Warning, events latency
-%                 might be inacurate (this is an open issue).
+%                 might be innacurate (this is an open issue).
 %  'sample1'    - start at sample1, default 0, overrides t1. Warning, 
-%                 events latency might be inacurate.
+%                 events latency might be innacurate.
 %  'lddur'      - duration of segment to load, default = whole file
 %  'ldnsamples' - number of samples to load, default = whole file, 
 %                 overrides lddur
@@ -475,7 +475,7 @@ if type == 'cnt'
               to_read = max_rows ;
               if (data_block > samples_left)
                   to_read = samples_left / h.nchannels ;                 
-              end        
+              end
 
               % Read data in a relatively small chunk
               temp_dat = fread(fid, [h.nchannels to_read], r.dataformat) ;
@@ -690,7 +690,7 @@ f.ldnsamples = r.ldnsamples ;
 for i=1:h.nchannels
   plab=sprintf('%c',f.electloc(i).lab);
   if i>1 
-   lab=char(lab,plab);
+   lab=str2mat(lab,plab);
   else 
    lab=plab;  
   end  
@@ -699,19 +699,44 @@ end
 %%%% to change offest in bytes to points 
 if ~isempty(ev2)
     if r.sample1 ~= 0
-        warning('Events imported with a time shift might be inacurate'); 
+        warning('Events imported with a time shift might be innacurate'); 
+%         fprintf(2,'Warning: events imported with a time shift might be innacurate\n');
     end
     ev2p=ev2; 
     ioff=900+(h.nchannels*75); %% initial offset : header + electordes desc 
+
+    %Begin modification by Ed Auer 2019/02/22
     if strcmpi(r.dataformat, 'int16')
-        for i=1:nevents 
-            ev2p(i).offset=(ev2p(i).offset-ioff)/(2*h.nchannels) - r.sample1; %% 2 short int end 
-        end     
+        if eT.teeg==3 % file larger than 1 gigabyte
+            for i=1:nevents 
+            	ev2p(i).offset=(ev2p(i).offset)/(2*h.nchannels) - r.sample1; %% 2 short int end 
+            end
+        else
+            for i=1:nevents
+                ev2p(i).offset=(ev2p(i).offset-ioff)/(2*h.nchannels) - r.sample1; %% 2 short int end 
+            end
+        end   
     else % 32 bits
-        for i=1:nevents 
-            ev2p(i).offset=(ev2p(i).offset-ioff)/(4*h.nchannels) - r.sample1; %% 4 short int end 
-        end     
+        if eT.teeg==3 % file larger than 1 gigabyte
+            for i=1:nevents 
+            	ev2p(i).offset=(ev2p(i).offset)/(4*h.nchannels) - r.sample1; %% 4 short int end 
+            end
+        else
+            for i=1:nevents
+                ev2p(i).offset=(ev2p(i).offset-ioff)/(4*h.nchannels) - r.sample1; %% 4 short int end 
+            end
+        end
     end
+        %END modification by Ed Auer 2019/02/22
+%         if strcmpi(r.dataformat, 'int16')
+%             for i=1:nevents
+%                 ev2p(i).offset=(ev2p(i).offset-ioff)/(2*h.nchannels) - r.sample1; %% 2 short int end 
+%             end
+%         else % 32 bits
+%             for i=1:nevents 
+%             	ev2p(i).offset=(ev2p(i).offset-ioff)/(4*h.nchannels) - r.sample1; %% 4 short int end 
+%             end
+%         end
     f.event = ev2p;
 end
 
