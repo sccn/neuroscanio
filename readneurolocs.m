@@ -50,7 +50,7 @@ end
 % read location file
 % ------------------
 if ischar(filename)
-    locs  = loadtxt( filename );
+    locs  = loadtxt( filename, 'delim', 9 );
 end
 
 if ~ischar(filename) || locs{1,1}(1) == ';' || size(locs,2) < 5
