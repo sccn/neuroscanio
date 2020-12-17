@@ -1,7 +1,7 @@
 # neuroscanio
 Import .CNT, .EEG Neuroscan binary files as well as Neuroscan epoch file (.DAT) and Neuroscan event files (.EV2) into EEGLAB. There are also functions to import Neuroscan ASCII (text) location files from the command line as well as a beta function to export continuous CNT files from the command line.	
 
-Note: In our experience, importing Neuroscan files is not an easy matter and no universal read function may exist. We include some other old tools below and hope they might help.
+Note: In our experience, importing Neuroscan files is not an easy matter and no universal read function may exist. We include some other old tools below and hope they might help. Most of the documentation below is from 2002 but we included it as it might still be relevant for some researchers.
 
 A collection of tools are included in [this data file](https://sccn.ucsd.edu/~arno/cntload.zip). They are detailed below.
 
