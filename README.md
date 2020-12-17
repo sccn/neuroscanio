@@ -49,6 +49,8 @@ After extensive searches, we realized that for our continuous CNT files, data wa
 
 Time interval input for loadcnt function: If the imported data don't look like continuous EEG, try changing this number. Most often it should be 1 or 40, but other values may work. 
 
+# Version history
+
 Version 1.3 update
 - loadcnt can now read events for files larger than 1Gb. Contribution from edauer1 on Github.
 
