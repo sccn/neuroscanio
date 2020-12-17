@@ -51,6 +51,9 @@ Time interval input for loadcnt function: If the imported data don't look like c
 
 # Version history
 
+Version 1.4 update
+- fix readneurolocs as it was importing an additional empty column
+
 Version 1.3 update
 - loadcnt can now read events for files larger than 1Gb. Contribution from edauer1 on Github.
 
