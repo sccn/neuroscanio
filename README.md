@@ -52,7 +52,7 @@ Time interval input for loadcnt function: If the imported data don't look like c
 # Version history
 
 Version 1.6
-- Fix reading ASC and DAT files
+- Deleting readneurolocs to avoid conflicts
 
 Version 1.5
 - Fix issue for Octave compatibility
