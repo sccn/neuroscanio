@@ -30,7 +30,7 @@
 
 function vers = eegplugin_neuroscanio(fig, trystrs, catchstrs)
 
-vers = 'neuroscanio1.5';
+vers = 'neuroscanio1.6';
 if nargin < 3
     error('eegplugin_neuroscanio requires 3 arguments');
 end

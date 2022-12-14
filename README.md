@@ -51,6 +51,12 @@ Time interval input for loadcnt function: If the imported data don't look like c
 
 # Version history
 
+Version 1.6
+- Fix reading ASC and DAT files
+
+Version 1.5
+- Fix issue for Octave compatibility
+
 Version 1.4 update
 - fix readneurolocs as it was importing an additional empty column
 
