@@ -30,7 +30,7 @@
 
 function vers = eegplugin_neuroscanio(fig, trystrs, catchstrs)
 
-vers = 'neuroscanio1.6';
+vers = 'neuroscanio1.7';
 if nargin < 3
     error('eegplugin_neuroscanio requires 3 arguments');
 end
@@ -52,6 +52,7 @@ uimenu( neuro_m, 'Label', 'From Neuroscan .CNT file', 'CallBack', cb_loadcnt,   
 uimenu( neuro_m, 'Label', 'From Neuroscan .EEG file', 'CallBack', cb_loadeeg);
 
 uimenu( epoch_m, 'Label', 'From Neuroscan .DAT file', 'CallBack', cb_loaddat);
+uimenu( event_m, 'Label', 'From Neuroscan .DAT file', 'CallBack', cb_loaddat);
 uimenu( event_m, 'Label', 'From Neuroscan .ev2 file', 'CallBack', cb_importev2);
 
 

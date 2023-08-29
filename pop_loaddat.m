@@ -77,19 +77,33 @@ disp('Loading dat file...');
 [typeeeg, rt, response, n] = loaddat( fullFileName );
 
 if n ~= EEG.trials
-	error('pop_loaddat, number of trials in input dataset and DAT file different, aborting');
-end;	  
-
-for index = 1:length(EEG.event)
-	EEG.event(index).eegtype  = typeeeg (EEG.event(index).epoch);
-	EEG.event(index).response = response(EEG.event(index).epoch);
+    if n ~= length(EEG.event)
+    	error('pop_loaddat, number of trials and events in input dataset and DAT file different, aborting');
+    end	  
 end
 
+if EEG.trials > 1
+    for index = 1:length(EEG.event)
+	    EEG.event(index).eegtype  = typeeeg (EEG.event(index).epoch);
+	    EEG.event(index).response = response(EEG.event(index).epoch);
+    end
+else
+    for index = 1:length(EEG.event)
+	    EEG.event(index).eegtype  = typeeeg (index);
+	    EEG.event(index).response = response(index);
+    end
+end
+
+% add responses
 for index = 1:n
 	if rt(index) ~= no_rt
 		EEG.event(end+1).type   = 'rt';
-		EEG.event(end).latency  = eeg_lat2point(rt(index)/1000, index, EEG.srate, [EEG.xmin EEG.xmax]);
-		EEG.event(end).epoch    = index;
+        if isfield(EEG.event, 'epoch')
+    		EEG.event(end).latency  = eeg_lat2point(rt(index)/1000, index, EEG.srate, [EEG.xmin EEG.xmax]);
+    		EEG.event(end).epoch    = index;
+        else
+    		EEG.event(end).latency  = EEG.event(index).latency + rt(index)/1000*EEG.srate; % rt is in ms
+        end
 		EEG.event(end).eegtype  = typeeeg(index);
 		EEG.event(end).response = response(index);
 	end
