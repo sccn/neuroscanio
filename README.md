@@ -51,6 +51,9 @@ Time interval input for loadcnt function: If the imported data don't look like c
 
 # Version history
 
+Version 1.7
+- Allowing to import .dat files into continuous files
+
 Version 1.6
 - Deleting readneurolocs to avoid conflicts
 
