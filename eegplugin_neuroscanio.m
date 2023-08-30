@@ -46,13 +46,14 @@ epoch_m = findobj(fig, 'tag', 'import epoch');
 cb_loadcnt     = [ 'try, [EEG LASTCOM] = pop_loadcnt;'      catchstrs.new_and_hist ]; 
 cb_loadeeg     = [ 'try, [EEG LASTCOM] = pop_loadeeg;'      catchstrs.new_and_hist ]; 
 cb_loaddat     = [ trystrs.check_epoch '[EEG LASTCOM]= pop_loaddat(EEG);'    catchstrs.store_and_hist ]; 
+cb_loaddat2    = [ trystrs.check_data  '[EEG LASTCOM]= pop_loaddat(EEG);'    catchstrs.store_and_hist ]; 
 cb_importev2   = [ trystrs.check_data  '[EEG LASTCOM]= pop_importev2(EEG);'  catchstrs.store_and_hist ]; 
 
 uimenu( neuro_m, 'Label', 'From Neuroscan .CNT file', 'CallBack', cb_loadcnt,    'Separator', 'on');
 uimenu( neuro_m, 'Label', 'From Neuroscan .EEG file', 'CallBack', cb_loadeeg);
 
 uimenu( epoch_m, 'Label', 'From Neuroscan .DAT file', 'CallBack', cb_loaddat);
-uimenu( event_m, 'Label', 'From Neuroscan .DAT file', 'CallBack', cb_loaddat);
+uimenu( event_m, 'Label', 'From Neuroscan .DAT file', 'CallBack', cb_loaddat2);
 uimenu( event_m, 'Label', 'From Neuroscan .ev2 file', 'CallBack', cb_importev2);
 
 

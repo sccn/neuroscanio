@@ -49,7 +49,7 @@ command = '';
 if nargin < 1
 	help  pop_loaddat;
 	return;
-end;	
+end
 
 if nargin < 2 
 	% ask user
@@ -59,7 +59,7 @@ if nargin < 2
 	result       = inputdlg2( { strvcat('Code signifying no event in a trial ([]=none)', ...
 									 '(none=all latencies are imported)')}, ...
 									 'Load Neuroscan DATA file -- pop_loaddat()', 1,  {'1000'}, 'pop_loaddat');
-	if length(result) == 0 return; end
+	if isempty(result) return; end
 	no_rt = eval( result{1} );
 end
 if exist('no_rt') ~= 1 || isempty(no_rt)
@@ -72,7 +72,8 @@ if exist('filepath')
 	fullFileName = sprintf('%s%s', filepath, filename);
 else
 	fullFileName = filename;
-end;	
+end
+
 disp('Loading dat file...');
 [typeeeg, rt, response, n] = loaddat( fullFileName );
 
@@ -110,10 +111,8 @@ for index = 1:n
 end
 tmpevent = EEG.event;
 tmp = [ tmpevent.latency ];
-[tmp indexsort] = sort(tmp);
+[~, indexsort] = sort(tmp);
 EEG.event = EEG.event(indexsort);
 EEG = eeg_checkset(EEG, 'eventconsistency');
 
-command = sprintf('EEG = pop_loaddat(EEG, %s, %d);', fullFileName, no_rt); 
-
-return;
+command = sprintf('EEG = pop_loaddat(EEG, ''%s'', %d);', fullFileName, no_rt); 
