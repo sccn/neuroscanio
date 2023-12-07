@@ -3,7 +3,7 @@
 %
 % Usage:
 %   >> OUTEEG = pop_loaddat( INEEG ); % pop-up window mode
-%   >> OUTEEG = pop_loaddat( INEEG, filename, no_rt);
+%   >> OUTEEG = pop_loaddat( INEEG, filename, no_rt, rt_correction);
 %
 % Graphic interfance:
 %   "Code signifying no event ..." - [edit box] reaction time 
@@ -17,6 +17,9 @@
 %                    time, epochs with no reaction time usually have
 %                    a stereotyped reaction time value (such as 1000).
 %                    Default none.
+%  rt_correction   - [integer] number of sample to correct rt with.
+%                    Default is 0, but we have seen values of 4.
+%
 % Outputs:
 %   OUTEEG         - EEGLAB data structure
 %
@@ -43,12 +46,15 @@
 % 01-25-02 reformated help & license -ad 
 % 13/02/02 removed the no latency option -ad
 
-function [EEG, command] = pop_loaddat(EEG, filename, no_rt); 
+function [EEG, command] = pop_loaddat(EEG, filename, no_rt, rt_correction)
 command = '';
 
 if nargin < 1
 	help  pop_loaddat;
 	return;
+end
+if nargin < 4
+    rt_correction = 0;
 end
 
 if nargin < 2 
@@ -75,7 +81,7 @@ else
 end
 
 disp('Loading dat file...');
-[typeeeg, rt, response, n] = loaddat( fullFileName );
+[typeeeg, rt, response, resptype, n] = loaddat( fullFileName );
 
 if n ~= EEG.trials
     if n ~= length(EEG.event)
@@ -87,23 +93,27 @@ if EEG.trials > 1
     for index = 1:length(EEG.event)
 	    EEG.event(index).eegtype  = typeeeg (EEG.event(index).epoch);
 	    EEG.event(index).response = response(EEG.event(index).epoch);
+	    EEG.event(index).resptype = resptype(index);
+	    EEG.event(index).rtlatency = rt(index);
     end
 else
     for index = 1:length(EEG.event)
 	    EEG.event(index).eegtype  = typeeeg (index);
 	    EEG.event(index).response = response(index);
+	    EEG.event(index).resptype = resptype(index);
+	    EEG.event(index).rtlatency = rt(index);
     end
 end
 
 % add responses
 for index = 1:n
 	if rt(index) ~= no_rt
-		EEG.event(end+1).type   = 'rt';
+		EEG.event(end+1).type   = [ 'rt' num2str(resptype(index)) ];
         if isfield(EEG.event, 'epoch')
-    		EEG.event(end).latency  = eeg_lat2point(rt(index)/1000, index, EEG.srate, [EEG.xmin EEG.xmax]);
+    		EEG.event(end).latency  = eeg_lat2point(rt(index)/1000, index, EEG.srate, [EEG.xmin EEG.xmax]) + rt_correction;
     		EEG.event(end).epoch    = index;
         else
-    		EEG.event(end).latency  = EEG.event(index).latency + rt(index)/1000*EEG.srate; % rt is in ms
+    		EEG.event(end).latency  = EEG.event(index).latency + rt(index)/1000*EEG.srate + rt_correction; % rt is in ms
         end
 		EEG.event(end).eegtype  = typeeeg(index);
 		EEG.event(end).response = response(index);

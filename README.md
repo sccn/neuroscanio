@@ -49,7 +49,14 @@ After extensive searches, we realized that for our continuous CNT files, data wa
 
 Time interval input for loadcnt function: If the imported data don't look like continuous EEG, try changing this number. Most often it should be 1 or 40, but other values may work. 
 
+# Alignemnt of responses stored in .DAT files
+
+Use the script test_response_alignement.m to test alignemtn of responses in the .dat files and responses in the CNT file (when present). 
+
 # Version history
+
+Version 1.8
+- Import more information from the .dat file
 
 Version 1.7
 - Allowing to import .dat files into continuous files

@@ -30,7 +30,7 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-function [tmptypeeeg, tmprt, tmpresponseeeg, n] = loaddat( FILENAME)
+function [tmptypeeeg, tmprt, tmpresponseeeg, tmpresp, n] = loaddat( FILENAME)
 
 if nargin<1 
 	fprintf('Not enought arguments\n'); 
@@ -55,6 +55,7 @@ for index=1:20	fgetl(fid); end
 % read the matrix
 % ---------------
 tmpMat 		    = fscanf(fid, '%f', [5, inf]);
+tmpresp         = tmpMat(2,:);
 tmptypeeeg  	= tmpMat(3,:);
 tmpresponseeeg  = tmpMat(4,:);
 tmprt       	= tmpMat(5,:);
